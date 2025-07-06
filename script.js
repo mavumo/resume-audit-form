@@ -18,7 +18,7 @@ function nextStep() {
 
 function analyzeResume() {
   const formData = new FormData(form);
-  fetch("backend/server.js", {
+  fetch("https://resume-audit-form.onrender.com", {
     method: "POST",
     body: formData,
   })
