@@ -9,7 +9,7 @@ app.use(cors());
 const upload = multer({ dest: "uploads/" });
 
 const openai = new OpenAIApi(
-  new Configuration({ apiKey: "YOUR_OPENAI_API_KEY" })
+  new Configuration({ apiKey: "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" })
 );
 
 app.post("/", upload.single("resume"), async (req, res) => {
