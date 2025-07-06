@@ -30,3 +30,8 @@ Return JSON: { "score": X, "summary": "...", "suggestions": ["..."] }
 });
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+
+require("dotenv").config();
+const openai = new OpenAIApi(
+  new Configuration({ apiKey: process.env.OPENAI_API_KEY })
+  );
