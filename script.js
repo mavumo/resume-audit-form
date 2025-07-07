@@ -1,56 +1,67 @@
-let currentStep = 0;
-const steps = document.querySelectorAll(".form-step");
-const form = document.getElementById("auditForm");
+document.addEventListener('DOMContentLoaded', () => {
+  const pages = Array.from(document.querySelectorAll('.form-page'));
+  const totalPages = 7;
+  let current = 1;
 
-function nextStep() {
-  if (currentStep === 2) {
-    // Start analysis
-    steps[currentStep].classList.remove("active");
-    currentStep++;
-    steps[currentStep].classList.add("active");
-    analyzeResume();
-  } else {
-    steps[currentStep].classList.remove("active");
-    currentStep++;
-    steps[currentStep].classList.add("active");
+  function showPage(n) {
+    pages.forEach(p => p.classList.toggle('active', +p.dataset.page === n));
+    document.getElementById('current-page').textContent = n;
   }
-}
 
-function analyzeResume() {
-  const formData = new FormData(form);
-  fetch("https://resume-audit-form.onrender.com", {
-    method: "POST",
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      setTimeout(() => {
-        showResults(data);
-      }, 2000); // simulate loading
+  // Next buttons
+  document.querySelectorAll('.next-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      if (current === 5) {
+        computeScoreAndRender();
+        current = 6;
+      } else if (current < totalPages) {
+        current++;
+      }
+      showPage(current);
     });
-}
+  });
 
-function showResults(data) {
-  steps[currentStep].classList.remove("active");
-  currentStep++;
-  steps[currentStep].classList.add("active");
+  // Back buttons
+  document.querySelectorAll('.back-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      if (current > 1) current--;
+      showPage(current);
+    });
+  });
 
-  document.getElementById("score").innerText = data.score;
-  document.getElementById("feedback").innerHTML = `
-    <strong>Feedback:</strong><br>${data.summary}<br><ul>
-    ${data.suggestions.map(s => `<li>${s}</li>`).join('')}
-    </ul>
-  `;
+  // Resume yes/no toggle
+  document.querySelectorAll('input[name="hasResume"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const upload = document.getElementById('upload-section');
+      const tip = document.getElementById('no-resume-tip');
+      if (r.value === 'no' && r.checked) {
+        upload.style.display = 'none';
+        tip.style.display = 'block';
+      } else {
+        upload.style.display = 'block';
+        tip.style.display = 'none';
+      }
+    });
+  });
 
-  if (data.score <= 6) {
-    document.getElementById("upsell").innerHTML = `
-      <h3>Improve Your Resume & Boost Your Chances</h3>
-      <p>Join <strong>Jobbyist Pro</strong> for a resume rewrite and personalized job matching.</p>
-      <a href="https://careers.jobbyist.co.za/upgrade" class="button">Upgrade Now</a>
-    `;
-  } else {
-    document.getElementById("upsell").innerHTML = `
-      <p>Nice work! Want to share your results or help a friend?</p>
-    `;
+  // Compute a random score 1–5 (replace with real logic)
+  function computeScoreAndRender() {
+    const score = Math.ceil(Math.random() * 5);
+    document.getElementById('score-graphic').textContent = score + '/5';
   }
-}
+
+  // Download basic audit stub
+  document.getElementById('download-report').addEventListener('click', () => {
+    alert('Your basic audit PDF would download now.');
+  });
+
+  // Upgrade CTA
+  document.getElementById('upgrade-btn').addEventListener('click', () => {
+    window.location.href = '/subscribe.html';
+  });
+
+  // Initialize
+  showPage(current);
+});
