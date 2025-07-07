@@ -3,45 +3,159 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ResumeAudit - Powered by Jobbyist</title>
+  <title>Resume Audit Form</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <form id="auditForm">
-    <div class="form-step active">
-      <h2>Welcome to the Resume Audit</h2>
-      <p>Get real-time AI feedback on your resume.</p>
-      <button type="button" onclick="nextStep()">Start</button>
+  <!-- Header with logo -->
+  <header>
+    <img src="resumeaudit.png" alt="Jobbyist Logo" class="logo" />
+  </header>
+
+  <div class="progress">
+    Page <span id="current-page">1</span> of <span id="total-pages">7</span>
+  </div>
+  
+  <div id="form-container">
+    <!-- Page 1: Basic Details -->
+    <div class="form-page" data-page="1">
+      <h2>Tell us about yourself</h2>
+      <label>Full Name<br/><input type="text" id="fullName" required/></label>
+      <label>Email<br/><input type="email" id="email" required/></label>
+      <label>Phone<br/><input type="tel" id="phone" required/></label>
+      <div class="nav-buttons">
+        <button class="next-btn">Next</button>
+      </div>
     </div>
 
-    <div class="form-step">
-      <label>Full Name:</label>
-      <input type="text" name="name" required />
-      <label>Email:</label>
-      <input type="email" name="email" required />
-      <label>LinkedIn Profile:</label>
-      <input type="url" name="linkedin" />
-      <button type="button" onclick="nextStep()">Next</button>
+    <!-- Page 2: Employment & Location -->
+    <div class="form-page" data-page="2">
+      <h2>Your current situation</h2>
+      <label>Employment Status<br/>
+        <select id="employment">
+          <option value="Employed">Employed</option>
+          <option value="Unemployed">Unemployed</option>
+          <option value="Student">Student</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+      <label>Location (City, Country)<br/><input type="text" id="location" required/></label>
+      <div class="nav-buttons">
+        <button class="back-btn">Back</button>
+        <button class="next-btn">Next</button>
+      </div>
     </div>
 
-    <div class="form-step">
-      <label>Upload Your Resume (PDF/DOCX):</label>
-      <input type="file" name="resume" accept=".pdf,.doc,.docx" required />
-      <button type="button" onclick="nextStep()">Analyze Resume</button>
+    <!-- Page 3: Desired Job & Salary -->
+    <div class="form-page" data-page="3">
+      <h2>Your goals</h2>
+      <label>Desired Job Title<br/><input type="text" id="jobTitle" required/></label>
+      <label>Salary Expectation<br/>
+        <input type="number" id="salary" required/>
+        <select id="currency">
+          <option value="USD">$</option>
+          <option value="ZAR">R</option>
+          <!-- add more -->
+        </select>
+      </label>
+      <div class="nav-buttons">
+        <button class="back-btn">Back</button>
+        <button class="next-btn">Next</button>
+      </div>
     </div>
 
-    <div class="form-step loading-step">
-      <h3>Analyzing your resume...</h3>
-      <p class="loader"></p>
+    <!-- Page 4: Career Questions -->
+    <div class="form-page" data-page="4">
+      <h2>Quick career check</h2>
+      <div class="question">
+        <label>1. What’s your biggest résumé challenge?<br/>
+          <input type="text" id="q1" placeholder="e.g. Formatting, length..." />
+        </label>
+      </div>
+      <div class="question">
+        <label>2. How often do you tailor your résumé?<br/>
+          <select id="q2">
+            <option>Never</option>
+            <option>Sometimes</option>
+            <option>Always</option>
+          </select>
+        </label>
+      </div>
+      <div class="question">
+        <label>3. Which section trips you up most?<br/>
+          <input type="text" id="q3" placeholder="e.g. Summary, Skills..." />
+        </label>
+      </div>
+      <div class="question">
+        <label>4. Rate your career value clarity (1–5)<br/>
+          <input type="number" id="q4" min="1" max="5" />
+        </label>
+      </div>
+      <div class="question">
+        <label>5. LinkedIn confidence (1–5)<br/>
+          <input type="number" id="q5" min="1" max="5" />
+        </label>
+      </div>
+      <div class="question">
+        <label>6. Next big outcome?<br/>
+          <input type="text" id="q6" placeholder="e.g. Interviews, industry switch..." />
+        </label>
+      </div>
+      <div class="nav-buttons">
+        <button class="back-btn">Back</button>
+        <button class="next-btn">Next</button>
+      </div>
     </div>
 
-    <div class="form-step result-step">
-      <h2>Your Score: <span id="score">--</span>/10</h2>
-      <div id="feedback"></div>
-      <div id="upsell"></div>
+    <!-- Page 5: Resume Upload -->
+    <div class="form-page" data-page="5">
+      <h2>Upload your résumé</h2>
+      <label>
+        <input type="radio" name="hasResume" value="yes" checked/> Yes
+      </label>
+      <label>
+        <input type="radio" name="hasResume" value="no"/> No
+      </label>
+      <div id="upload-section">
+        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx"/>
+      </div>
+      <div id="no-resume-tip" style="display:none;">
+        <p>Consider drafting a basic résumé to maximize your audit.</p>
+      </div>
+      <div class="nav-buttons">
+        <button class="back-btn">Back</button>
+        <button class="next-btn">Next</button>
+      </div>
     </div>
-  </form>
+
+    <!-- Page 6: Score & Basic Download -->
+    <div class="form-page" data-page="6" id="score-page">
+      <h2>Your Mini-Audit Score</h2>
+      <div id="score-graphic">5/5</div>
+      <button id="download-report">Download Basic Audit</button>
+      <div class="nav-buttons">
+        <button class="next-btn">Next</button>
+      </div>
+    </div>
+
+    <!-- Page 7: Upsell to Pro -->
+    <div class="form-page" data-page="7">
+      <h2>Get a Full Audit Report</h2>
+      <ul>
+        <li>Line‐by‐line feedback from a certified specialist</li>
+        <li>Free 15-minute consultation</li>
+      </ul>
+      <p><strong>Only $9.99/month</strong> (or local equivalent)</p>
+      <button id="upgrade-btn">Upgrade to Pro</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025, Jobbyist. All rights reserved.
+  </footer>
 
   <script src="script.js"></script>
 </body>
+</html>
 </html>
