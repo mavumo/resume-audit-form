@@ -1,62 +1,92 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f9f9f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
+* { box-sizing: border-box; margin:0; padding:0; }
+body, html {
+  height:100%;
+  font-family:sans-serif;
+  display:flex;
+  flex-direction:column;
 }
-form {
-  background: #fff;
-  padding: 30px;
-  max-width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+header {
+  text-align:center;
+  padding:1rem 0;
 }
-.form-step {
-  display: none;
-  flex-direction: column;
+.logo {
+  max-width:200px;
+  height:auto;
 }
-.form-step.active {
-  display: flex;
+
+/* Progress indicator */
+.progress {
+  position:fixed;
+  top:1rem;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:0.9rem;
+  color:#333;
+}
+
+/* Main form container grows */
+#form-container {
+  position:relative;
+  flex:1;
+  overflow:hidden;
+}
+.form-page {
+  position:absolute;
+  top:0;
+  left:100%;
+  width:100%;
+  padding:2rem;
+  transition: left .4s ease;
+}
+.form-page.active {
+  left:0;
+}
+
+/* Headings and labels */
+h2 {
+  margin-bottom:1rem;
 }
 label {
-  margin-top: 10px;
-  font-weight: bold;
+  display:block;
+  margin-bottom:1rem;
 }
-input {
-  padding: 10px;
-  margin-top: 5px;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+input, select {
+  width:100%;
+  padding:.5rem;
+  margin-top:.3rem;
+}
+
+/* Navigation buttons */
+.nav-buttons {
+  margin-top:1.5rem;
 }
 button {
-  margin-top: 20px;
-  padding: 12px;
-  background: #2b72ff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
+  padding:.7rem 1.2rem;
+  border:none;
+  background:#007BFF;
+  color:#fff;
+  cursor:pointer;
+  border-radius:4px;
+  font-size:1rem;
 }
-.loader {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #2b72ff;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
+button.back-btn {
+  background:#6c757d;
+  margin-right:1rem;
 }
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+
+/* Score graphic */
+#score-graphic {
+  font-size:3rem;
+  margin:2rem 0;
+  text-align:center;
 }
-.result-step span {
-  font-size: 2em;
+
+/* Footer styling */
+footer {
+  text-align:center;
+  padding:1rem 0;
+  background:#f8f8f8;
+  font-size:0.9rem;
+  color:#666;
 }
-#feedback, #upsell {
-  margin-top: 20px;
 }
