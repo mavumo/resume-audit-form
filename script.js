@@ -1,19 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
   const pages = Array.from(document.querySelectorAll('.form-page'));
-  const totalPages = 7;
+  const totalPages = pages.length;
   let current = 1;
 
   function showPage(n) {
     pages.forEach(p => p.classList.toggle('active', +p.dataset.page === n));
-    document.getElementById('current-page').textContent = n;
   }
 
-  // Next buttons
+  // Next
   document.querySelectorAll('.next-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
       if (current === 5) {
-        computeScoreAndRender();
+        renderScore();
         current = 6;
       } else if (current < totalPages) {
         current++;
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Back buttons
+  // Back
   document.querySelectorAll('.back-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
@@ -31,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Resume yes/no toggle
+  // Resume toggle
   document.querySelectorAll('input[name="hasResume"]').forEach(r => {
     r.addEventListener('change', () => {
       const upload = document.getElementById('upload-section');
@@ -46,22 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Compute a random score 1–5 (replace with real logic)
-  function computeScoreAndRender() {
-    const score = Math.ceil(Math.random() * 5);
+  // Stubbed scoring
+  function renderScore() {
+    const score = Math.ceil(Math.random()*5);
     document.getElementById('score-graphic').textContent = score + '/5';
   }
 
-  // Download basic audit stub
-  document.getElementById('download-report').addEventListener('click', () => {
-    alert('Your basic audit PDF would download now.');
-  });
+  // Download stub
+  document.getElementById('download-report')
+    .addEventListener('click', () => alert('Your basic audit PDF would download now.'));
 
   // Upgrade CTA
-  document.getElementById('upgrade-btn').addEventListener('click', () => {
-    window.location.href = '/subscribe.html';
-  });
+  document.getElementById('upgrade-btn')
+    .addEventListener('click', () => window.location.href = '/subscribe.html');
 
-  // Initialize
   showPage(current);
 });
